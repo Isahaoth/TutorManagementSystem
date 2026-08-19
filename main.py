@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Tutoring Management Application")
-
+        self.setFixedHeight(425)
         container = QWidget()
         self.setCentralWidget(container)
 
@@ -108,12 +108,23 @@ class MainWindow(QMainWindow):
 
         inner_container = QWidget()
         navigationLayout = QVBoxLayout(inner_container)
+        inner_container.setFixedWidth(285)
 
         label1 = QLabel('Witaj Korepetytorze!')
+        label1.setStyleSheet("""
+            color: rgb(150, 155, 49);
+            font-size: 25px;
+            font-weight: bold;
+        """)
         label1.setAlignment(Qt.AlignCenter)
 
-        label2 = QLabel(f'Twoje zarobki wynoszą {zarobki[0]} zł.')
+        label2 = QLabel(f'Twoje całkowite zarobki wynoszą <b>{zarobki[0]} zł.</b>')
+        label2.setStyleSheet("""
+                  color: rgb(150, 155, 49);
+                  font-size: 20px;
+              """)
         label2.setAlignment(Qt.AlignCenter)
+        label2.setWordWrap(True)
 
         button1 = QPushButton('Kliknij, aby wyświetlić swoich uczniów.')
         button2 = QPushButton('Kliknij, aby dodać nowego ucznia.')
@@ -125,6 +136,7 @@ class MainWindow(QMainWindow):
         navigationLayout.addWidget(button3)
         navigationLayout.addWidget(button2)
         navigationLayout.addWidget(button1)
+
 
         #NO 2 PANEL
         workspace = QStackedWidget()
@@ -150,6 +162,28 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication()
+
+app.setStyleSheet( """
+    QWidget {
+        background-color: rgb(217, 221, 146);
+    }
+    QLineEdit {
+        background-color: white;
+    }
+    QPushButton {
+        background-color: rgb(150, 155, 49);
+        border-radius: 5px;
+        height: 30px;
+        font-size: 13px;
+        color: white;
+        border: 2px solid rgb(121, 125, 38);
+    }
+    QComboBox {
+        background-color: white;
+    }
+        
+"""
+)
 
 window = MainWindow()
 window.show()
