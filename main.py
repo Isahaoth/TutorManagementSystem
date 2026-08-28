@@ -1,54 +1,73 @@
+from PySide6.QtGui import QIcon, QPixmap, QFontDatabase, QFont
 from databaseoperator import DataOperator
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QTableWidget, QStackedWidget, QLineEdit, QComboBox
-from PySide6.QtCore import Qt
+    QTableWidget, QStackedWidget, QLineEdit, QComboBox, QFrame, QDateTimeEdit
+from PySide6.QtCore import Qt, QDateTime, Signal
 
 db = DataOperator()
 db.make_table()
 uczniowie = db.return_students()
-zarobki = db.overall_zarobki()
-
 
 #STUDENTS SIDEWINDOW
 
 class AddTutoringWidget(QWidget):
+    addedsignal = Signal()
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("<h3>DODAJ ZAJĘCIA</h3>"))
+        layout.setContentsMargins(20, 0, 20, 0)
 
-        layout.addWidget(QLabel("<i>Id ucznia:</i>"))
+        card = QFrame()
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(25,20,25,20)
+        card_layout.setSpacing(10)
+
+        heading = QLabel("DODAJ ZAJĘCIA")
+        heading.setAlignment(Qt.AlignCenter)
+        heading.setObjectName("heading")
+        card_layout.addWidget(heading)
+
+
+        card_layout.addWidget(QLabel("Id ucznia:"))
         self.studentidInput = QLineEdit()
-        layout.addWidget(self.studentidInput)
+        card_layout.addWidget(self.studentidInput)
 
-        layout.addWidget(QLabel("<i>Data zajęć (YYYY-MM-DD HH:MM):</i>"))
-        self.dateInput = QLineEdit()
-        layout.addWidget(self.dateInput)
+        card_layout.addWidget(QLabel("Data zajęć:"))
+        self.dateInput = QDateTimeEdit()
+        self.dateInput.setCalendarPopup(True)
+        self.dateInput.setDateTime(QDateTime.currentDateTime())
+        self.dateInput.setDisplayFormat("yyyy-MM-dd HH:mm")
+        card_layout.addWidget(self.dateInput)
 
-        layout.addWidget(QLabel("<i>Stawka:</i>"))
+        card_layout.addWidget(QLabel("Stawka:"))
         self.moneyInput = QLineEdit()
-        layout.addWidget(self.moneyInput)
+        card_layout.addWidget(self.moneyInput)
 
-        layout.addWidget(QLabel("<i>Typ zajęć:</i>"))
+        card_layout.addWidget(QLabel("Typ zajęć:"))
         self.typeInput = QComboBox()
         self.typeInput.addItems(["Przygotowanie do E8", "Przygotowanie do Matury", "Powtórki do zajęć","Nadrobienie zaległości","Inne"])
-        layout.addWidget(self.typeInput)
+        card_layout.addWidget(self.typeInput)
+
+        card_layout.addSpacing(15)
 
         self.confirmButton = QPushButton("Zatwierdź")
-        layout.addWidget(self.confirmButton)
+        self.confirmButton.setCursor(Qt.PointingHandCursor)
+        card_layout.addWidget(self.confirmButton)
 
         self.confirmButton.clicked.connect(self.saveTutoring)
+        layout.addWidget(card)
 
     def saveTutoring(self):
        typeid = self.typeInput.currentIndex()+1
        money = self.moneyInput.text()
-       date = self.dateInput.text()
+       date = self.dateInput.dateTime().toString("yyyy-MM-dd HH:mm")
        studentid = self.studentidInput.text()
 
        db.add_zajecia(studentid, typeid, date, money)
+       self.addedsignal.emit()
 
        self.moneyInput.clear()
-       self.dateInput.clear()
+       self.dateInput.setDateTime(QDateTime.currentDateTime())
        self.studentidInput.clear()
 
 
@@ -56,31 +75,55 @@ class YourStudentsWidget(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("LISTA TWOICH UCZNIÓW"))
+        layout.setContentsMargins(20, 0, 20, 0)
+
+        card = QFrame()
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(25, 20, 25, 20)
+        card_layout.setSpacing(10)
+
+        heading = QLabel("LISTA TWOICH UCZNIOW")
+        heading.setObjectName("heading")
+        heading.setAlignment(Qt.AlignCenter)
+        card_layout.addWidget(heading)
+
+        layout.addWidget(card)
 
 class AddStudentWidget(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("<h3>DODAJ NOWEGO UCZNIA</h3>"))
+        layout.setContentsMargins(20, 0, 20, 0)
 
-        layout.addWidget(QLabel("<i>Imię ucznia:</i>"))
+        card = QFrame()
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(25, 20, 25, 20)
+        card_layout.setSpacing(10)
+
+        heading = QLabel("DODAJ NOWEGO UCZNIA")
+        heading.setObjectName("heading")
+        card_layout.addWidget(heading)
+        heading.setAlignment(Qt.AlignCenter)
+
+        card_layout.addWidget(QLabel("Imię ucznia:"))
         self.nameInput = QLineEdit()
-        layout.addWidget(self.nameInput)
+        card_layout.addWidget(self.nameInput)
 
-        layout.addWidget(QLabel("<i>Nazwisko ucznia:</i>"))
+        card_layout.addWidget(QLabel("Nazwisko ucznia:"))
         self.lastnameInput = QLineEdit()
-        layout.addWidget(self.lastnameInput)
+        card_layout.addWidget(self.lastnameInput)
 
-        layout.addWidget(QLabel("<i>Klasa:</i>"))
+        card_layout.addWidget(QLabel("Klasa:"))
         self.classInput = QLineEdit()
-        layout.addWidget(self.classInput)
-        layout.addWidget(QLabel("<i>Aby móc w pełni korzystać ze statystyk uczniów klasę należy zakodować jako numer oraz literę (P/L/T).</i>"))
+        card_layout.addWidget(self.classInput)
+        card_layout.addWidget(QLabel("Aby móc w pełni korzystać ze statystyk uczniów klasę należy zakodować jako numer oraz literę (P/L/T)."))
 
         self.confirmButton = QPushButton("Zatwierdź")
-        layout.addWidget(self.confirmButton)
+        self.confirmButton.setCursor(Qt.PointingHandCursor)
+        card_layout.addWidget(self.confirmButton)
 
         self.confirmButton.clicked.connect(self.saveStudents)
+        layout.addWidget(card)
 
     def saveStudents(self):
         name = self.nameInput.text()
@@ -98,41 +141,50 @@ class AddStudentWidget(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
+        self.setWindowIcon(QIcon('gui/images/icon'))
         self.setWindowTitle("Tutoring Management Application")
-        self.setFixedHeight(425)
-        container = QWidget()
-        self.setCentralWidget(container)
+        self.setFixedHeight(550)
 
+        container = QWidget()
+        container.setObjectName("CentralWidget")
+        self.setCentralWidget(container)
         layout = QHBoxLayout(container)
 
-        inner_container = QWidget()
+        inner_container = QFrame()
+        inner_container.setObjectName("NavigationBar")
+        inner_container.setFixedWidth(300)
+
         navigationLayout = QVBoxLayout(inner_container)
-        inner_container.setFixedWidth(285)
+        navigationLayout.setContentsMargins(20, 25, 20, 25)
+        navigationLayout.setSpacing(15)
 
         label1 = QLabel('Witaj Korepetytorze!')
         label1.setStyleSheet("""
-            color: rgb(150, 155, 49);
             font-size: 25px;
             font-weight: bold;
         """)
         label1.setAlignment(Qt.AlignCenter)
-
-        label2 = QLabel(f'Twoje całkowite zarobki wynoszą <b>{zarobki[0]} zł.</b>')
-        label2.setStyleSheet("""
-                  color: rgb(150, 155, 49);
+        picture = QPixmap('gui/images/userkitty.png')
+        label3 = QLabel()
+        label3.setPixmap(picture)
+        label3.setScaledContents(True)
+        label3.setFixedSize(275, 275)
+        self.label2 = QLabel()
+        self.label2.setStyleSheet("""
                   font-size: 20px;
               """)
-        label2.setAlignment(Qt.AlignCenter)
-        label2.setWordWrap(True)
+        self.label2.setAlignment(Qt.AlignCenter)
+        self.label2.setWordWrap(True)
+        self.updateEarnings()
 
-        button1 = QPushButton('Kliknij, aby wyświetlić swoich uczniów.')
-        button2 = QPushButton('Kliknij, aby dodać nowego ucznia.')
-        button3 = QPushButton('Kliknij, aby dodać zajęcia.')
+        button1 = QPushButton(' Wyświetl swoich uczniów')
+        button2 = QPushButton(' Dodaj nowego ucznia')
+        button3 = QPushButton(' Dodaj zajęcia')
 
         #NO 1 PANEL
         navigationLayout.addWidget(label1)
-        navigationLayout.addWidget(label2)
+        navigationLayout.addWidget(label3)
+        navigationLayout.addWidget(self.label2)
         navigationLayout.addWidget(button3)
         navigationLayout.addWidget(button2)
         navigationLayout.addWidget(button1)
@@ -145,6 +197,7 @@ class MainWindow(QMainWindow):
         pagestudents = YourStudentsWidget()
         pageadding = AddStudentWidget()
         pageaddtutoring = AddTutoringWidget()
+        pageaddtutoring.addedsignal.connect(self.updateEarnings)
 
         #DODAWANIE
         workspace.addWidget(pagestudents)
@@ -160,33 +213,24 @@ class MainWindow(QMainWindow):
         layout.addWidget(inner_container, stretch=1)
         layout.addWidget(workspace, stretch=3)
 
+    def updateEarnings(self):
+        result = db.overall_zarobki()
+        total = result
+        self.label2.setText(f"Twoje całkowite zarobki wynoszą <b>{total:.1f} zł.</b>")
+
+
 
 app = QApplication()
+QFontDatabase.addApplicationFont("gui/fonts/Nunito-Regular.ttf")
+QFontDatabase.addApplicationFont("gui/fonts/Nunito-Bold.ttf")
+app.setFont(QFont("Nunito", 10))
 
-app.setStyleSheet( """
-    QWidget {
-        background-color: rgb(217, 221, 146);
-    }
-    QLineEdit {
-        background-color: white;
-    }
-    QPushButton {
-        background-color: rgb(150, 155, 49);
-        border-radius: 5px;
-        height: 30px;
-        font-size: 13px;
-        color: white;
-        border: 2px solid rgb(121, 125, 38);
-    }
-    QComboBox {
-        background-color: white;
-    }
-        
-"""
-)
+with open("stylesheet.qss", "r") as file:
+    app.setStyleSheet(file.read())
 
 window = MainWindow()
 window.show()
+
 
 app.exec()
 
