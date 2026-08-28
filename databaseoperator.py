@@ -86,9 +86,10 @@ class DataOperator:
     def overall_zarobki(self):
         connection = self.make_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT ROUND(SUM(stawka),2) FROM zajecia ORDER BY id_ucznia DESC")
-        connection.commit()
-        return cursor.fetchone()
+        cursor.execute("SELECT ROUND(SUM(stawka),2) FROM zajecia")
+        ret = cursor.fetchone()
+        kwota = ret[0] or 0.0
+        return kwota
 
     def showZajecia(self):
         connection = self.make_connection()
