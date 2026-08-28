@@ -20,7 +20,8 @@ class DataOperator:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 imie TEXT,
                 nazwisko TEXT,
-                klasa TEXT
+                klasa TEXT,
+                rodzaj_szkoly TEXT
                 )
         """)
 
@@ -62,10 +63,10 @@ class DataOperator:
         connection.close()
         print("Bazy danych utworzono.")
 
-    def add_student(self, imie, nazwisko, klasa):
+    def add_student(self, imie, nazwisko, klasa, rodzaj_szkoly):
         connection = self.make_connection()
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO uczniowie(imie, nazwisko, klasa) VALUES (?,?,?) ", (imie, nazwisko, klasa))
+        cursor.execute("INSERT INTO uczniowie(imie, nazwisko, klasa, rodzaj_szkoly) VALUES (?,?,?,?) ", (imie, nazwisko, klasa, rodzaj_szkoly))
 
         connection.commit()
         print("Dodano ucznia "+str(imie)+" "+str(nazwisko))
@@ -86,9 +87,9 @@ class DataOperator:
     def overall_zarobki(self):
         connection = self.make_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT ROUND(SUM(stawka),2) FROM zajecia")
+        cursor.execute("SELECT ROUND(SUM(stawka),3) FROM zajecia")
         ret = cursor.fetchone()
-        kwota = ret[0] or 0.0
+        kwota = ret[0] or 0.00
         return kwota
 
     def showZajecia(self):
