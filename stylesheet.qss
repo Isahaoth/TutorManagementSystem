@@ -101,3 +101,36 @@ QLabel#heading
         border-bottom: 4px solid #1C3552;
         font-weight: 500;
  }
+
+QTableWidget {
+    background-color: white;
+    font-family: "Nunito", sans-serif;
+    font-size: 13px;
+    color: #0d2b45;
+    border: 1px solid #DBE3ED;
+    border-radius: 12px;
+    gridline-color: #EDF2F7;
+    outline: none;
+}
+
+QHeaderView::section
+{
+    background-color: #668BBB;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    font-size: 13px;
+    border: 1px solid #5A7FAE;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 10px;
+}
+QHeaderView::section:last {
+    border-top-right-radius: 10px;
+}
+
+QTableWidget::item {
+    padding: 10px 8px;
+    border-bottom: 1px solid #edf2f7;
+}
+
