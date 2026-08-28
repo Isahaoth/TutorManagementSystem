@@ -1,0 +1,103 @@
+ QMainWindow, QWidget#CentralWidget
+ {
+        background-color: #F0F4F9;
+        color: #426A9E;
+        font-family: 'Nunito';
+ }
+
+QLabel
+{
+    background-color: transparent;
+    border: none;
+    font-size: 15px;
+    color: #1C3552;
+}
+
+QLabel#heading
+{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+ QLineEdit
+ {
+        background-color: white;
+        height: 35px;
+        border-radius: 8px;
+        border: 2px solid #E2E8F0;
+        padding-left: 8px;
+        font-style: italic;
+        font-size: 14px;
+ }
+
+ QDateTimeEdit
+ {
+     background-color: white;
+     height: 35px;
+     border-radius: 8px;
+     border: 2px solid #E2E8F0;
+     padding-left: 8px;
+     font-style: italic;
+ }
+
+ QPushButton
+ {
+        background-color: #6C91C2;
+        border-radius: 12px;
+        height: 35px;
+        font-size: 13px;
+        color: white;
+        border: 2px solid #426A9E;
+        border-bottom: 4px solid #5B85BD;
+        font-weight: 700;
+ }
+
+ QPushButton:hover {
+    background-color: #527EB7;
+}
+
+ QComboBox
+ {
+        background-color: white;
+        height: 35px;
+        border-radius: 8px;
+        border: 2px solid #E2E8F0;
+        padding-left: 8px;
+        font-style: italic;
+ }
+
+ .QFrame{
+    background-color: #EBF2FC;
+    border-radius: 16px;
+    border: 2px solid #D0DFEE;
+    border-bottom: 4px solid #CBDDF0;
+ }
+
+ QFrame#NavigationBar
+ {
+    background-color: #7B9EC9;
+    border-radius: 16px;
+    border: 2px solid #4F709C;
+    border-bottom: 4px solid #3D5B82;
+
+ }
+
+ QFrame#NavigationBar QLabel
+ {
+    color: white;
+ }
+
+ QFrame#NavigationBar QPushButton
+ {
+        background-color: #2C4E77;
+        border-radius: 10px;
+        height: 30px;
+        font-size: 15px;
+        color: white;
+        border: 2px solid #426A9E;
+        padding: 0 5px;
+        text-align: center;
+        border-bottom: 4px solid #1C3552;
+        font-weight: 500;
+ }
