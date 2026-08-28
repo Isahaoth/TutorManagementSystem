@@ -1,8 +1,9 @@
-# 📚 Tutor Management System
+# 📚 Tutor Management System 
 
 ## Description
 Project is a local app that lets its user keep track of the tutoring sessions they give, their students, info about them and monitor their earnings. The project is still in development.
 
+## UI Preview - important note! the project's UI so far is only developed in polish language.
 ![UI Screenshot](/gui/images/UI.png?raw=true "UI preview")
 
 ## Built With
